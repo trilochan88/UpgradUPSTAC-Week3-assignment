@@ -1,9 +1,11 @@
 package org.upgrad.upstac.testrequests;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.internal.util.Contracts;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.web.server.ResponseStatusException;
 import org.upgrad.upstac.testrequests.lab.CreateLabResult;
@@ -13,8 +15,8 @@ import org.upgrad.upstac.testrequests.lab.TestStatus;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 @SpringBootTest
@@ -141,6 +143,9 @@ class LabRequestControllerTest {
 
         //Use assertThat() method to perform the following comparison
         //  the exception message should be contain the string "ConstraintViolationException"
+        Contracts.assertNotNull(result);
+        assertEquals(HttpStatus.BAD_REQUEST, result.getStatus());
+        assertEquals("ConstraintViolationException",result.getReason());
 
     }
 
